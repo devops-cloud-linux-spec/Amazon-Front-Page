@@ -1,7 +1,7 @@
 pipeline{
     agent any
     tools{
-        jdk 'java-17'
+        jdk 'jdk17'
         nodejs 'node16'
     }
     environment {
@@ -15,7 +15,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'master', url: 'https://github.com/devops-with-Git/Amazon-Front-Page.git'
+                git branch: 'master', url: 'https://github.com/devops-cloud-linux-spec/Amazon-Front-Page.git'
             }
         }
         stage("Sonarqube Analysis "){
@@ -34,17 +34,17 @@ pipeline{
 	stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'Docker-Hub', toolName: 'docker'){
+                   withDockerRegistry(credentialsId: 'prashikrk', toolName: 'docker'){
                        sh "docker build -t amazon ."
-                       sh "docker tag amazon swapnilhub/amazon:latest "
-                       sh "docker push swapnilhub/amazon:latest "
+                       sh "docker tag amazon prashikrk/amazon:latest "
+                       sh "docker push prashikrk/amazon:latest "
                     }
                 }
             }
         }
 	stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name amazon -p 3000:3000 swapnilhub/amazon:latest'
+                sh 'docker run -d --name amazon -p 3000:3000 prashikrk/amazon:latest'
             }
         }
     }
