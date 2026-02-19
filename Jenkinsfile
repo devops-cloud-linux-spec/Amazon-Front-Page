@@ -34,7 +34,7 @@ pipeline{
 	stage("Docker Build & Push"){
             steps{
                 script{
-                   withDockerRegistry(credentialsId: 'prashikrk', toolName: 'docker'){
+                   withDockerRegistry([credentialsId: 'prashikrk']){
                        sh "docker build -t amazon ."
                        sh "docker tag amazon prashikrk/amazon:latest "
                        sh "docker push prashikrk/amazon:latest "
